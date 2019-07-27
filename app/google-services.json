@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "411531913502",
+    "firebase_url": "https://fix-it-f40af.firebaseio.com",
+    "project_id": "fix-it-f40af",
+    "storage_bucket": "fix-it-f40af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411531913502:android:a911a1f681eca442",
+        "android_client_info": {
+          "package_name": "com.services.fixit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411531913502-6s2inorncvhokk9qbn2rjamt8i64nofv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.services.fixit",
+            "certificate_hash": "f4ffe266912ce22072527eea1802be1188e0942c"
+          }
+        },
+        {
+          "client_id": "411531913502-np7d3e6q7b9s7kskms1riou78vdstt86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArEkPORvgaAm37UyOWVcGcEYefJbT_Gdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411531913502-np7d3e6q7b9s7kskms1riou78vdstt86.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
