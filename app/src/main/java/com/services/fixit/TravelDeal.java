@@ -2,7 +2,9 @@ package com.services.fixit;
 
 import android.widget.EditText;
 
-public class TravelDeal {
+import java.io.Serializable;
+
+public class TravelDeal implements Serializable {
     private String id;
     private String title;
     private String description;
