@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Fix It</string>
+    <string name="app_name">Travelmantics</string>
     <string name="title_hint">Deal Title</string>
     <string name="price_hint">Price (numbers only)</string>
     <string name="description_hint">Description</string>
-    <string name="save_menu">save</string>
+    <string name="save_menu">Save</string>
     <string name="title_activity_service_provider_console">ServiceProviderConsole</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

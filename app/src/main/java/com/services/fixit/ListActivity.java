@@ -23,14 +23,6 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-//        FirebaseUtil.openFbReference("traveldeals", this);
-//
-//        RecyclerView rvDeals = findViewById(R.id.rvDeals);
-//        final DealAdapter adapter = new DealAdapter();
-//        rvDeals.setAdapter(adapter);
-//        LinearLayoutManager dealsLayoutManager = new LinearLayoutManager(
-//                this, RecyclerView.VERTICAL, false);
-//        rvDeals.setLayoutManager(dealsLayoutManager);
     }
 
     @Override
@@ -52,7 +44,8 @@ public class ListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.insert_menu:
-                startActivity(new Intent(this, DealActivity.class));
+                Intent intent = new Intent(this, DealActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.logout_menu:
                 AuthUI.getInstance()
@@ -78,7 +71,7 @@ public class ListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         FirebaseUtil.openFbReference("traveldeals", this);
-        RecyclerView rvDeals = (RecyclerView) findViewById(R.id.rvDeals);
+        RecyclerView rvDeals = findViewById(R.id.rvDeals);
         final DealAdapter adapter = new DealAdapter();
         rvDeals.setAdapter(adapter);
         LinearLayoutManager dealsLayoutManager =
@@ -86,6 +79,19 @@ public class ListActivity extends AppCompatActivity {
         rvDeals.setLayoutManager(dealsLayoutManager);
         FirebaseUtil.attachListener();
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        FirebaseUtil.openFbReference("traveldeals", this);
+//        RecyclerView rvDeals = findViewById(R.id.rvDeals);
+//        final DealAdapter adapter = new DealAdapter();
+//        rvDeals.setAdapter(adapter);
+//        LinearLayoutManager dealsLayoutManager =
+//                new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+//        rvDeals.setLayoutManager(dealsLayoutManager);
+//        FirebaseUtil.attachListener();
+//    }
 
     public void showMenu() {
         invalidateOptionsMenu();
