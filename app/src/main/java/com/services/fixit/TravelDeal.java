@@ -1,7 +1,5 @@
 package com.services.fixit;
 
-import android.widget.EditText;
-
 import java.io.Serializable;
 
 public class TravelDeal implements Serializable {

@@ -36,7 +36,6 @@ public class ListActivity extends AppCompatActivity {
         else {
             insertMenu.setVisible(false);
         }
-
         return true;
     }
 
@@ -57,6 +56,7 @@ public class ListActivity extends AppCompatActivity {
                             }
                         });
                 FirebaseUtil.detachListener();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -75,23 +75,10 @@ public class ListActivity extends AppCompatActivity {
         final DealAdapter adapter = new DealAdapter();
         rvDeals.setAdapter(adapter);
         LinearLayoutManager dealsLayoutManager =
-                new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+                new LinearLayoutManager(this);
         rvDeals.setLayoutManager(dealsLayoutManager);
         FirebaseUtil.attachListener();
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        FirebaseUtil.openFbReference("traveldeals", this);
-//        RecyclerView rvDeals = findViewById(R.id.rvDeals);
-//        final DealAdapter adapter = new DealAdapter();
-//        rvDeals.setAdapter(adapter);
-//        LinearLayoutManager dealsLayoutManager =
-//                new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-//        rvDeals.setLayoutManager(dealsLayoutManager);
-//        FirebaseUtil.attachListener();
-//    }
 
     public void showMenu() {
         invalidateOptionsMenu();
