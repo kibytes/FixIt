@@ -5,21 +5,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class DealActivity extends AppCompatActivity {
 
@@ -29,6 +34,8 @@ public class DealActivity extends AppCompatActivity {
     EditText txtTitle;
     EditText txtDescription;
     EditText txtPrice;
+    ImageView imageView;
+
     private TravelDeal deal;
 
     @Override
@@ -41,6 +48,8 @@ public class DealActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         txtDescription = findViewById(R.id.txtDescription);
         txtPrice = findViewById(R.id.txtPrice);
+        imageView = findViewById(R.id.image);
+
         Intent intent = getIntent();
         TravelDeal aDeal = (TravelDeal) intent.getSerializableExtra("Deal");
         if(aDeal == null) {
@@ -50,6 +59,7 @@ public class DealActivity extends AppCompatActivity {
         txtTitle.setText(deal.getTitle());
         txtDescription.setText(deal.getDescription());
         txtPrice.setText(deal.getPrice());
+        showImage(deal.getImageUrl());
 
         Button btnImage = findViewById(R.id.btnImage);
         btnImage.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +84,10 @@ public class DealActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                    String pictureName = taskSnapshot.getStorage().getPath();
                     deal.setImageUrl(url);
+                    deal.setImageName(pictureName);
+                    showImage(url);
                 }
             });
         }
@@ -110,7 +123,6 @@ public class DealActivity extends AppCompatActivity {
         deal.setTitle(txtTitle.getText().toString());
         deal.setDescription(txtDescription.getText().toString());
         deal.setPrice(txtPrice.getText().toString());
-        deal.setImageUrl("");
 
         if(deal.getId() == null) {
             mDatabaseReference.push().setValue(deal);
@@ -126,6 +138,22 @@ public class DealActivity extends AppCompatActivity {
             return;
         }
         mDatabaseReference.child(deal.getId()).removeValue();
+        Log.d("image name", deal.getImageName());
+
+        if(deal.getImageName() != null && deal.getImageName().isEmpty() == false) {
+            StorageReference picRef = FirebaseUtil.mStorage.getReference().child(deal.getImageName());
+            picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("Delete Image", "Image Successfully Deleted");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("Delete Image", e.getMessage());
+                }
+            });
+        }
     }
 
     private void backToList() {
@@ -140,11 +168,13 @@ public class DealActivity extends AppCompatActivity {
             menu.findItem(R.id.delete_menu).setVisible(true);
             menu.findItem(R.id.save_menu).setVisible(true);
             enableEditTexts(true);
+            findViewById(R.id.btnImage).setEnabled(true);
         }
         else {
             menu.findItem(R.id.delete_menu).setVisible(false);
             menu.findItem(R.id.save_menu).setVisible(false);
             enableEditTexts(false);
+            findViewById(R.id.btnImage).setEnabled(false);
         }
         return true;
     }
@@ -153,5 +183,17 @@ public class DealActivity extends AppCompatActivity {
         txtTitle.setEnabled(isEnabled);
         txtDescription.setEnabled(isEnabled);
         txtPrice.setEnabled(isEnabled);
+    }
+
+    private void showImage(String url) {
+        if (url != null && url.isEmpty() == false) {
+            int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+            Picasso.get()
+                    .load(url)
+                    .resize(width, width*2/3)
+                    .centerCrop()
+                    .into(imageView);
+
+        }
     }
 }
