@@ -1,6 +1,5 @@
 package com.services.fixit;
 
-
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,10 +45,10 @@ public class FirebaseUtil {
             mAuthListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    if(mFirebaseAuth.getCurrentUser() == null) {
+                    if(firebaseAuth.getCurrentUser() == null) {
                         FirebaseUtil.signIn();
                     } else {
-                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String userId = firebaseAuth.getUid();
                         checkAdmin(userId);
                     }
                     Toast.makeText(callerActivity.getBaseContext(), "Welcome back!", Toast.LENGTH_LONG).show();
@@ -74,26 +73,22 @@ public class FirebaseUtil {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                FirebaseUtil.isAdmin = true;
-                caller.showMenu();
+
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                FirebaseUtil.isAdmin = true;
-                caller.showMenu();
+
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                FirebaseUtil.isAdmin = true;
-                caller.showMenu();
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                FirebaseUtil.isAdmin = true;
-                caller.showMenu();
+
             }
         };
         ref.addChildEventListener(listener);
@@ -122,6 +117,7 @@ public class FirebaseUtil {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
                         .build(), RC_SIGN_IN);
     }
 }

@@ -36,7 +36,7 @@ public class DealActivity extends AppCompatActivity {
     EditText txtPrice;
     ImageView imageView;
 
-    private TravelDeal deal;
+    TravelDeal deal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +45,10 @@ public class DealActivity extends AppCompatActivity {
 
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
-        txtTitle = findViewById(R.id.txtTitle);
-        txtDescription = findViewById(R.id.txtDescription);
-        txtPrice = findViewById(R.id.txtPrice);
-        imageView = findViewById(R.id.image);
+        txtTitle = (EditText)findViewById(R.id.txtTitle);
+        txtDescription = (EditText)findViewById(R.id.txtDescription);
+        txtPrice = (EditText)findViewById(R.id.txtPrice);
+        imageView = (ImageView) findViewById(R.id.image);
 
         Intent intent = getIntent();
         TravelDeal aDeal = (TravelDeal) intent.getSerializableExtra("Deal");
@@ -82,17 +82,23 @@ public class DealActivity extends AppCompatActivity {
             ref.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            deal.setImageUrl(uri.toString());
-                            showImage(deal.getImageUrl());
-                        }
-                    });
-                    //String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+//                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            deal.setImageUrl(uri.toString());
+//                            showImage(deal.getImageUrl());
+//                        }
+//                    });
+//                    //String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+//                    String pictureName = taskSnapshot.getStorage().getPath();
+//                    deal.setImageName(pictureName);
+                    String url = ref.getDownloadUrl().toString();
                     String pictureName = taskSnapshot.getStorage().getPath();
+                    deal.setImageUrl(url);
                     deal.setImageName(pictureName);
-
+                    //Log.d("Url: ", url);
+                    //Log.d("Name", pictureName);
+                    showImage(url);
                 }
             });
         }
