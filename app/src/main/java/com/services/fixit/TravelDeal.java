@@ -53,9 +53,7 @@ public class TravelDeal implements Serializable {
         this.price = price;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public String getImageUrl() { return imageUrl; }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;

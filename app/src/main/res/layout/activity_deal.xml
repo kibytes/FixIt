@@ -14,6 +14,7 @@
         android:layout_marginTop="@dimen/txt_margin_large"
         android:layout_marginEnd="@dimen/txt_margin_standard"
         android:hint="@string/title_hint"
+        android:textColorHighlight="#2196F3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,8 +26,9 @@
         android:layout_marginStart="@dimen/txt_margin_standard"
         android:layout_marginTop="@dimen/txt_margin_standard"
         android:layout_marginEnd="@dimen/txt_margin_standard"
-        android:inputType="numberDecimal"
         android:hint="@string/price_hint"
+        android:inputType="numberDecimal"
+        android:textColorHighlight="#2196F3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
@@ -39,6 +41,7 @@
         android:layout_marginTop="@dimen/txt_margin_standard"
         android:layout_marginEnd="@dimen/txt_margin_standard"
         android:hint="@string/description_hint"
+        android:textColorHighlight="#2196F3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPrice" />
@@ -50,7 +53,11 @@
         android:layout_marginStart="@dimen/txt_margin_standard"
         android:layout_marginTop="@dimen/txt_margin_standard"
         android:layout_marginEnd="@dimen/txt_margin_standard"
+        android:background="#FFC107"
+        android:fontFamily="serif"
         android:text="upload image"
+        android:textColor="#2196F3"
+        android:textColorHighlight="#03A9F4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescription" />

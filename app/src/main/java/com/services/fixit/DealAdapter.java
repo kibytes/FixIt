@@ -27,13 +27,12 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildListener;
-    private ImageView imageDeal;
 
     public DealAdapter() {
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
 
-        deals = FirebaseUtil.mDeals;
+        this.deals = FirebaseUtil.mDeals;
         mChildListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -90,6 +89,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         TextView tvTitle;
         TextView tvDescription;
         TextView tvPrice;
+        ImageView imageDeal;
 
         public DealViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +110,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Log.d("Click", String.valueOf(position));
+            //Log.d("Click", String.valueOf(position));
             TravelDeal selectedDeal = deals.get(position);
             Intent intent = new Intent(view.getContext(), DealActivity.class);
             intent.putExtra("Deal", selectedDeal);
@@ -121,7 +121,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             if (url != null && url.isEmpty()==false) {
                 Picasso.get()
                         .load(url)
-                        .resize(160, 160)
+                        .resize(80, 80)
                         .centerCrop()
                         .into(imageDeal);
             }

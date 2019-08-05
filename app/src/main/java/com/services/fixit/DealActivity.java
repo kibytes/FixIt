@@ -69,7 +69,6 @@ public class DealActivity extends AppCompatActivity {
                 intent.setType("image/jpeg");
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 startActivityForResult(intent.createChooser(intent, "Insert Picture"), PICTURE_RESULT);
-
             }
         });
     }
@@ -79,15 +78,21 @@ public class DealActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
-            StorageReference ref = FirebaseUtil.mStorageRef.child(imageUri.getLastPathSegment());
+            final StorageReference ref = FirebaseUtil.mStorageRef.child(imageUri.getLastPathSegment());
             ref.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            deal.setImageUrl(uri.toString());
+                            showImage(deal.getImageUrl());
+                        }
+                    });
+                    //String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                     String pictureName = taskSnapshot.getStorage().getPath();
-                    deal.setImageUrl(url);
                     deal.setImageName(pictureName);
-                    showImage(url);
+
                 }
             });
         }
@@ -138,19 +143,20 @@ public class DealActivity extends AppCompatActivity {
             return;
         }
         mDatabaseReference.child(deal.getId()).removeValue();
-        Log.d("image name", deal.getImageName());
 
         if(deal.getImageName() != null && deal.getImageName().isEmpty() == false) {
-            StorageReference picRef = FirebaseUtil.mStorage.getReference().child(deal.getImageName());
+            StorageReference picRef = FirebaseUtil.mStorage
+                                        .getReference()
+                                        .child(deal.getImageName());
             picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Log.d("Delete Image", "Image Successfully Deleted");
+                    //Log.d("Delete Image", "Image Successfully Deleted");
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d("Delete Image", e.getMessage());
+                    //Log.d("Delete Image", e.getMessage());
                 }
             });
         }
@@ -193,7 +199,6 @@ public class DealActivity extends AppCompatActivity {
                     .resize(width, width*2/3)
                     .centerCrop()
                     .into(imageView);
-
         }
     }
 }

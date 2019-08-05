@@ -1,7 +1,5 @@
 package com.services.fixit;
 
-import android.app.Activity;
-import android.util.Log;
 
 import android.widget.Toast;
 
@@ -9,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +31,7 @@ public class FirebaseUtil {
 
     public static ArrayList<TravelDeal> mDeals;
     private static ListActivity caller;
-    private static final int RC_SIGN_IN = 123;
+    private static final int RC_SIGN_IN = 100;
     public static boolean isAdmin;
 
     private FirebaseUtil() {}
@@ -60,7 +57,7 @@ public class FirebaseUtil {
             };
             connectStorage();
         }
-        mDeals = new ArrayList<TravelDeal>();
+        mDeals = new ArrayList<>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
     }
 
@@ -77,22 +74,26 @@ public class FirebaseUtil {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                FirebaseUtil.isAdmin = true;
+                caller.showMenu();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                FirebaseUtil.isAdmin = true;
+                caller.showMenu();
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                FirebaseUtil.isAdmin = true;
+                caller.showMenu();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                FirebaseUtil.isAdmin = true;
+                caller.showMenu();
             }
         };
         ref.addChildEventListener(listener);
@@ -101,7 +102,6 @@ public class FirebaseUtil {
     public static void connectStorage() {
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference().child("deals_pictures");
-
     }
 
     public static void attachListener() {
@@ -113,31 +113,6 @@ public class FirebaseUtil {
     }
 
     private static void signIn() {
-//        ActionCodeSettings actionCodeSettings =
-//                ActionCodeSettings.newBuilder()
-//                        // URL you want to redirect back to. The domain (www.example.com) for this
-//                        // URL must be whitelisted in the Firebase Console.
-//                        .setUrl("https://www.google.com/finishSignUp?cartId=1234")
-//                        // This must be true
-//                        .setHandleCodeInApp(true)
-//                        .setIOSBundleId("com.example.ios")
-//                        .setAndroidPackageName(
-//                                "com.services.fixit",
-//                                true, /* installIfNotAvailable */
-//                                "21"    /* minimumVersion */)
-//                        .build();
-//
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//        auth.sendSignInLinkToEmail(email, actionCodeSettings)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            Log.d(TAG, "Email sent.");
-//                        }
-//                    }
-//                });
-
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
