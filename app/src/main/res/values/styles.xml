@@ -6,15 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:actionBarStyle">@style/TravelmanticsAppBar</item>
 
         <item name="colorControlNormal">#CDDC39</item>
         <item name="colorControlActivated">#2196F3</item>
         <item name="colorControlHighlight">#f44336</item>
-    </style>
-
-    <style name="TravelmanticsAppBar" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">#2196F3</item>
     </style>
 
 </resources>

@@ -23,22 +23,25 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTheme(R.style.);
         setContentView(R.layout.activity_list);
+        ActionBar bar = getSupportActionBar();
+        bar.setTitle("Available Deals");
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_activity_menu, menu);
-        MenuItem insertMenu = menu.findItem(R.id.insert_menu);
-        if (FirebaseUtil.isAdmin == true) {
-            insertMenu.setVisible(true);
-        }
-        else {
-            insertMenu.setVisible(false);
-        }
         return true;
     }
 
@@ -68,6 +71,12 @@ public class ListActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         FirebaseUtil.detachListener();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.insert_menu).setVisible(FirebaseUtil.isAdmin);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

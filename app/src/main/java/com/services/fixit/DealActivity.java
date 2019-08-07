@@ -45,10 +45,10 @@ public class DealActivity extends AppCompatActivity {
 
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
-        txtTitle = (EditText)findViewById(R.id.txtTitle);
-        txtDescription = (EditText)findViewById(R.id.txtDescription);
-        txtPrice = (EditText)findViewById(R.id.txtPrice);
-        imageView = (ImageView) findViewById(R.id.image);
+        txtTitle = findViewById(R.id.txtTitle);
+        txtDescription = findViewById(R.id.txtDescription);
+        txtPrice = findViewById(R.id.txtPrice);
+        imageView = findViewById(R.id.image);
 
         Intent intent = getIntent();
         TravelDeal aDeal = (TravelDeal) intent.getSerializableExtra("Deal");
@@ -79,26 +79,18 @@ public class DealActivity extends AppCompatActivity {
         if(requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             final StorageReference ref = FirebaseUtil.mStorageRef.child(imageUri.getLastPathSegment());
-            ref.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                            deal.setImageUrl(uri.toString());
-//                            showImage(deal.getImageUrl());
-//                        }
-//                    });
-//                    //String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-//                    String pictureName = taskSnapshot.getStorage().getPath();
-//                    deal.setImageName(pictureName);
-                    String url = ref.getDownloadUrl().toString();
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            deal.setImageUrl(uri.toString());
+                            showImage(deal.getImageUrl());
+                        }
+                    });
                     String pictureName = taskSnapshot.getStorage().getPath();
-                    deal.setImageUrl(url);
                     deal.setImageName(pictureName);
-                    //Log.d("Url: ", url);
-                    //Log.d("Name", pictureName);
-                    showImage(url);
                 }
             });
         }
@@ -109,13 +101,13 @@ public class DealActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.save_menu:
                 saveDeal();
-                Toast.makeText(this, "Deal Saved", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Deal Saved", Toast.LENGTH_SHORT).show();
                 clean();
                 backToList();
                 return true;
             case R.id.delete_menu:
                 deleteDeal();
-                Toast.makeText(this, "Deal Deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Deal Deleted", Toast.LENGTH_SHORT).show();
                 backToList();
                 return true;
             default:
@@ -140,7 +132,6 @@ public class DealActivity extends AppCompatActivity {
         } else {
             mDatabaseReference.child(deal.getId()).setValue(deal);
         }
-
     }
 
     public void deleteDeal() {
@@ -150,19 +141,17 @@ public class DealActivity extends AppCompatActivity {
         }
         mDatabaseReference.child(deal.getId()).removeValue();
 
-        if(deal.getImageName() != null && deal.getImageName().isEmpty() == false) {
-            StorageReference picRef = FirebaseUtil.mStorage
-                                        .getReference()
-                                        .child(deal.getImageName());
+        if(deal.getImageName() != null && !deal.getImageName().isEmpty()) { // or == false
+            StorageReference picRef = FirebaseUtil.mStorage.getReference().child(deal.getImageName());
             picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    //Log.d("Delete Image", "Image Successfully Deleted");
+                    Log.d("Delete Image", "Image Successfully Deleted");
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    //Log.d("Delete Image", e.getMessage());
+                    Log.d("Delete Image", e.getMessage());
                 }
             });
         }
@@ -170,24 +159,19 @@ public class DealActivity extends AppCompatActivity {
 
     private void backToList() {
         Intent intent = new Intent(this, ListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.save_menu, menu);
-        if (FirebaseUtil.isAdmin) {
-            menu.findItem(R.id.delete_menu).setVisible(true);
-            menu.findItem(R.id.save_menu).setVisible(true);
-            enableEditTexts(true);
-            findViewById(R.id.btnImage).setEnabled(true);
-        }
-        else {
-            menu.findItem(R.id.delete_menu).setVisible(false);
-            menu.findItem(R.id.save_menu).setVisible(false);
-            enableEditTexts(false);
-            findViewById(R.id.btnImage).setEnabled(false);
-        }
+        menu.findItem(R.id.delete_menu).setVisible(FirebaseUtil.isAdmin);
+        menu.findItem(R.id.save_menu).setVisible(FirebaseUtil.isAdmin);
+        enableEditTexts(FirebaseUtil.isAdmin);
+        findViewById(R.id.btnImage).setEnabled(FirebaseUtil.isAdmin);
         return true;
     }
 

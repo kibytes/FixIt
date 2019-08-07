@@ -24,7 +24,7 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="casual"
         android:text="TextView"
-        android:textColor="#2196F3"
+        android:textColor="#009688"
         android:textSize="@dimen/title_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageDeal"
@@ -39,7 +39,7 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="TextView"
-        android:textColor="#4CAF50"
+        android:textColor="#FF9800"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageDeal"
@@ -51,12 +51,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/txt_margin_standard"
         android:layout_marginEnd="@dimen/txt_margin_standard"
-        android:layout_marginBottom="20dp"
         android:fontFamily="monospace"
         android:text="TextView"
-        android:textColor="#F44336"
+        android:textColor="#991107"
         android:textSize="@dimen/text_price"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,6 +31,7 @@ public class FirebaseUtil {
     public static ArrayList<TravelDeal> mDeals;
     private static ListActivity caller;
     private static final int RC_SIGN_IN = 100;
+
     public static boolean isAdmin;
 
     private FirebaseUtil() {}
@@ -48,15 +49,14 @@ public class FirebaseUtil {
                     if(firebaseAuth.getCurrentUser() == null) {
                         FirebaseUtil.signIn();
                     } else {
-                        String userId = firebaseAuth.getUid();
-                        checkAdmin(userId);
+                        checkAdmin(firebaseAuth.getUid());
                     }
                     Toast.makeText(callerActivity.getBaseContext(), "Welcome back!", Toast.LENGTH_LONG).show();
                 }
             };
             connectStorage();
         }
-        mDeals = new ArrayList<>();
+        mDeals = new ArrayList<TravelDeal>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
     }
 

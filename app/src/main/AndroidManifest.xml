@@ -19,9 +19,8 @@
         </activity>
 
         <activity android:name=".DealActivity"
-            android:screenOrientation="portrait" >
-
-
+            android:screenOrientation="portrait"
+            android:label="Deal" >
         </activity>
     </application>
 
